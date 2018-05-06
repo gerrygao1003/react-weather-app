@@ -55,12 +55,14 @@ class App extends React.Component {
   getMyLocation = () => {
     
     const location = navigator && navigator.geolocation
+
     if (location) {
       location.getCurrentPosition(async (position) => {
         const api_call =  await fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${API_KEY}&units=metric`);
         let dataAuto = await  api_call.json();
         document.getElementById('city').value = dataAuto.name; 
         document.getElementById('country').value = dataAuto.sys.country; 
+
       }, (error) => {
        
       })
@@ -71,15 +73,17 @@ class App extends React.Component {
   render(){
     this.getMyLocation();
     return(
-      <div>
-        <div className="wrapper">
-          <div className="main">
-            <div className="container">
-              <div className="row">
-              
-                <div className="col-xs-5 title-container">
+     <div className="container app-wrapper ">
+      <div className="row">
+      <div className="col s12">
+        <div className="card ">
+          <div className="card-content">
                   <Titles />
-                  <Form getWeather={this.getWeather}/>
+                  <Form getWeather={this.getWeather} hasCountry={this.hasCountry}/>
+
+          </div>
+
+        </div>
 
                   <Weather 
                     temperature={this.state.temperature}
@@ -89,14 +93,12 @@ class App extends React.Component {
                     description={this.state.description}
                     error={this.state.error}
                   />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
+      </div>
+      </div>
+             
         
          
-      </div>
     );
   }
   
